@@ -1,5 +1,6 @@
 package me.caps123987;
 
+import me.caps123987.config.JComponentConfig;
 import me.caps123987.window.JWindow;
 import me.caps123987.workers.FileWorker;
 import me.caps123987.workers.JavaExecutor;
@@ -24,22 +25,29 @@ public class CompLib {
                     import java.util.Random;
                     import me.caps123987.annotation.LConfig;
                     
-                    public class CusBus extends JPanel{
+                    public class CusBus extends JLabel{
                         Map<Integer,Integer> map = new HashMap<>();
                         
                         @LConfig
                         public Color c = Color.RED;
                         
                         public CusBus() {
-                            super();
+                            this.setForeground(this.c);
                             
+                            this.setText("Caaau");
                             
+                    //      setBounds(100,100,100,100);
+
                     //        Random r = new Random();
                     //        System.out.println("CusBus created");
                     //        
                     //        for (int i = 0; i < 99999; i++) {
                     //            map.put(r.nextInt(0,Integer.MAX_VALUE),r.nextInt(0,Integer.MAX_VALUE));
                     //        }
+                        }
+                        public void setC(Color c) {
+                            this.c = c;
+                            this.setForeground(this.c);
                         }
                         public void t1(int i) {
                             map.put(i,i);
@@ -73,20 +81,23 @@ public class CompLib {
             FILE_WORKER.run();
             component.getClass().getDeclaredMethod("t1",int.class).invoke(component,5);
 
-            processor.getComponentConfig(component);
+            JComponentConfig config = processor.getComponentConfig(component);
 
             System.out.println("Compiled in "+(System.currentTimeMillis()-l)/1000.0+"s");
 
 
+            JWindow window = new JWindow(component,config);
+            JLabel labelL = new JLabel();
+            labelL.setText("Label L");
+            labelL.setForeground(Color.WHITE);
+//            window.add(labelL);
+
+            window.setVisible(true);
         } catch (Exception e) {
             FILE_WORKER.run();
             throw new RuntimeException(e);
         }
 
 
-        if (true) return;
-
-        JWindow window = new JWindow();
-        window.setVisible(true);
     }
 }
