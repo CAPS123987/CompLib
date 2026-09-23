@@ -1,25 +1,27 @@
 package me.caps123987.design;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 import java.awt.*;
 
 public class DesignRules {
-    public static final Color BACKGROUND = new Color(0x3F3F42);
-    public static final Color LIFTED_BACKGROUND = BACKGROUND.brighter();
+    public static final Color BACKGROUND = new Color(0x232324);
     public static final Color TEXT = Color.WHITE;
+    public static final Color NEUTRAL = new Color(0x323235);
     public static final Color ADDITIVE = new Color(0x2161D8);
     public static final Color DESCRUCTIVE = new Color(0xDA2C2C);
     public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 14);
 
 
     @Data
+    @Builder(toBuilder=true)
     public static class Button {
-        public static DesignRules.Button DEFAULT = new DesignRules.Button(
-                LIFTED_BACKGROUND,
+        public static DesignRules.Button NEUTRAL = new DesignRules.Button(
+                DesignRules.NEUTRAL,
                 TEXT,
-                LIFTED_BACKGROUND.brighter(),
+                DesignRules.NEUTRAL.brighter(),
                 DEFAULT_FONT,
                 24,
                 2,
@@ -34,7 +36,7 @@ public class DesignRules {
                 DEFAULT_FONT,
                 24,
                 2,
-                16,
+                20,
                 12
         );
 
@@ -45,7 +47,7 @@ public class DesignRules {
                 DEFAULT_FONT,
                 24,
                 2,
-                16,
+                20,
                 12
         );
 

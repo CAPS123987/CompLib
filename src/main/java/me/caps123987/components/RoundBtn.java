@@ -69,8 +69,6 @@ public class RoundBtn extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 
-//        g2.setComposite(AlphaComposite.Src);
-
         //if pressed change color
         if (getModel().isPressed()) {
             g2.setColor(getBackground().darker());
@@ -78,8 +76,9 @@ public class RoundBtn extends JButton {
             g2.setColor(getBackground());
         }
 
+        //pozadi
         int lineWidth = getLineWidth();
-        g2.fill(new RoundRectangle2D.Double(lineWidth / 2.0, lineWidth / 2.0, getWidth() - lineWidth, getHeight() - lineWidth, roundness + lineWidth, roundness + lineWidth));
+        g2.fill(new RoundRectangle2D.Double(lineWidth, lineWidth, getWidth() - lineWidth*2, getHeight() - lineWidth*2, roundness + lineWidth, roundness + lineWidth));
 
 
         if (getModel().isPressed()) {
@@ -87,11 +86,13 @@ public class RoundBtn extends JButton {
         } else {
             g2.setColor(getBorderColor());
         }
+
+        //outline
         g2.setStroke(new BasicStroke(lineWidth));
         g2.draw(new RoundRectangle2D.Double(lineWidth, lineWidth, getWidth() - (lineWidth * 2), getHeight() - (lineWidth * 2), roundness, roundness));
 
-        g2.dispose();
-
         super.paintComponent(g);
+
+        g2.dispose();
     }
 }
