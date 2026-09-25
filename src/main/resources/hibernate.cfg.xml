@@ -12,8 +12,8 @@
 
 <!--        <property name="hibernate.dialect">org.hibernate.dialect.MariaDBDialect</property>-->
         <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
-        <property name="hibernate.transaction.jta.platform">true</property>
+        <property name="hibernate.hbm2ddl.auto">none</property>
+        <!-- no JTA container here: transactions are resource-local (JDBC), so hibernate.transaction.jta.platform stays unset -->
 
         <!-- Entities mapping will be added later -->
         <!-- <mapping class="com.example.Student"/> -->

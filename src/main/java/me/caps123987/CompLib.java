@@ -1,13 +1,16 @@
 package me.caps123987;
 
 import me.caps123987.config.JComponentConfig;
+import me.caps123987.entities.User;
 import me.caps123987.window.JWindow;
 import me.caps123987.workers.FileWorker;
 import me.caps123987.workers.JavaExecutor;
 import me.caps123987.workers.LConfigProcessor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,11 +79,32 @@ public class CompLib {
 
         Configuration cfg = new Configuration();
         cfg.configure();
+        cfg.addAnnotatedClass(User.class);
 
         SessionFactory factory = cfg.buildSessionFactory();
         Session session = factory.openSession();
         System.out.println("Hibernate setup successful!");
 
+        Transaction tx = session.beginTransaction();
+        User u = new User();
+        u.setName("admin");
+        u.setPassword("admin");
+        u.setRole("admin");
+
+        session.persist(u);
+
+
+        Query<User> query = session.createNamedQuery("User.findByUserName");
+        query.setParameter("name", "tester");
+
+
+        System.out.println(query.getSingleResult());
+
+        session.remove(u);
+
+
+
+        tx.commit();
         try {
             System.out.println("Compiling...");
             long l = System.currentTimeMillis();
