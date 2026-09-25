@@ -12,20 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 @RequiredArgsConstructor
 public class JComponentConfig {
+    @NonNull
     @Getter
     @Setter
-    @NonNull
-    private List<Field> fields;
-    @Getter
-    @Setter
-    @NonNull
-    private List<Method> fieldSetters;
+    private Map<String, SimpleField> simpleFieldMap;
+
     @Getter
     @Setter
     @NonNull
     private JComponent instance;
 
+    public SimpleField getSimpleField(String name) {
+        return simpleFieldMap.get(name);
+    }
 
+    public List<SimpleField> getAllSimpleFields() {
+        return simpleFieldMap.values().stream().toList();
+    }
 }

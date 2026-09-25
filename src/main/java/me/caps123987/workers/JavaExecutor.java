@@ -33,7 +33,7 @@ public class JavaExecutor {
 
         String className = source.substring(classStart, classNameEnd+classStart);
 
-        System.out.println("Class name: " + className);
+//        System.out.println("Class name: " + className);
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 

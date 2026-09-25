@@ -65,15 +65,10 @@ public class JWindow extends JFrame {
                     .textPaddingX(50).build());
             btn4.updateButtonDesign();
 
-            try {
-                config.getFieldSetters().getFirst().invoke(component,new Color(new Random().nextInt(0,255),
-                        new Random().nextInt(0,255),
-                        new Random().nextInt(0,255)));
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            } catch (InvocationTargetException ex) {
-                throw new RuntimeException(ex);
-            }
+            config.getSimpleField("c").setValue(new Color(new Random().nextInt(0,255),
+                    new Random().nextInt(0,255),
+                    new Random().nextInt(0,255)));
+
         });
 
         backgroundPanel.add(btn);

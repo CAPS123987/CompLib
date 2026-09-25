@@ -5,6 +5,9 @@ import me.caps123987.window.JWindow;
 import me.caps123987.workers.FileWorker;
 import me.caps123987.workers.JavaExecutor;
 import me.caps123987.workers.LConfigProcessor;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,18 +69,23 @@ public class CompLib {
                         }
                     }
                     """;
-    public static void main(String[] args) throws InterruptedException {
-        List<JComponent> components = new ArrayList<>();
-
+    public static void main(String[] args) {
 
         JavaExecutor executor = new JavaExecutor();
         LConfigProcessor processor = new LConfigProcessor();
+
+        Configuration cfg = new Configuration();
+        cfg.configure();
+
+        SessionFactory factory = cfg.buildSessionFactory();
+        Session session = factory.openSession();
+        System.out.println("Hibernate setup successful!");
+
         try {
             System.out.println("Compiling...");
             long l = System.currentTimeMillis();
 
             JComponent component = executor.getJComponent(SOURCE);
-            components.add(component);
             FILE_WORKER.run();
             component.getClass().getDeclaredMethod("t1",int.class).invoke(component,5);
 

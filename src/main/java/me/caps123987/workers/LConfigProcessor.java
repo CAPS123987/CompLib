@@ -1,21 +1,23 @@
 package me.caps123987.workers;
 
 import me.caps123987.config.JComponentConfig;
+import me.caps123987.config.SimpleField;
 
 import javax.swing.*;
 import java.lang.reflect.AccessFlag;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LConfigProcessor {
     public JComponentConfig getComponentConfig(JComponent component)
             throws LConfigProcessorFieldAccessError, LConfigProcessorFieldSetterNotFoundError {
         Class<?> clazz = component.getClass();
 
-        List<Field> fields = new ArrayList<>();
-        List<Method> fieldSetters = new ArrayList<>();
+        Map<String, SimpleField> simpleFieldMap = new HashMap<>();
 
         for (Field f : clazz.getDeclaredFields()) {
             if(f.isAnnotationPresent(me.caps123987.annotation.LConfig.class)) {
@@ -40,14 +42,14 @@ public class LConfigProcessor {
                     throw new LConfigProcessorFieldSetterNotFoundError("Setter method for field " + f.getName() + " in " + clazz.getName()+" class not found");
                 }
 
-                fields.add(f);
-                fieldSetters.add(setterMethod);
+                SimpleField simpleField = new SimpleField(f,setterMethod,component);
+                simpleFieldMap.put(simpleField.getName(),simpleField);
             }
         }
 
-        System.out.println(fields);
+        System.out.println(simpleFieldMap);
 
-        return new JComponentConfig(fields, fieldSetters, component);
+        return new JComponentConfig(simpleFieldMap, component);
     }
 
     public static class LConfigProcessorException extends Exception {
