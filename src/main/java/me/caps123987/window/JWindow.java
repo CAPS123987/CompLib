@@ -65,6 +65,8 @@ public class JWindow extends JFrame {
                     .textPaddingX(50).build());
             btn4.updateButtonDesign();
 
+            config.getSimpleField("kkt").setValue("tohle tisknu");
+
             config.getSimpleField("c").setValue(new Color(new Random().nextInt(0,255),
                     new Random().nextInt(0,255),
                     new Random().nextInt(0,255)));

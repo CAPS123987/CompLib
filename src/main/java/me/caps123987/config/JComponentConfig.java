@@ -15,9 +15,9 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class JComponentConfig {
-    @NonNull
     @Getter
     @Setter
+    @NonNull
     private Map<String, SimpleField> simpleFieldMap;
 
     @Getter

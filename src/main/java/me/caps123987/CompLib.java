@@ -37,6 +37,9 @@ public class CompLib {
                         @LConfig
                         public Color c = Color.RED;
                         
+                        @LConfig
+                        public String kkt = "baf";
+                        
                         public CusBus() {
                             this.setForeground(this.c);
                             
@@ -50,6 +53,9 @@ public class CompLib {
                     //        for (int i = 0; i < 99999; i++) {
                     //            map.put(r.nextInt(0,Integer.MAX_VALUE),r.nextInt(0,Integer.MAX_VALUE));
                     //        }
+                        }
+                        public void setKkt(String s) {
+                            System.out.println(s);
                         }
                         public void setC(Color c) {
                             this.c = c;
@@ -77,34 +83,37 @@ public class CompLib {
         JavaExecutor executor = new JavaExecutor();
         LConfigProcessor processor = new LConfigProcessor();
 
-        Configuration cfg = new Configuration();
-        cfg.configure();
-        cfg.addAnnotatedClass(User.class);
+        try {
+            Configuration cfg = new Configuration();
+            cfg.configure();
+            cfg.addAnnotatedClass(User.class);
 
-        SessionFactory factory = cfg.buildSessionFactory();
-        Session session = factory.openSession();
-        System.out.println("Hibernate setup successful!");
+            SessionFactory factory = cfg.buildSessionFactory();
+            Session session = factory.openSession();
+            System.out.println("Hibernate setup successful!");
 
-        Transaction tx = session.beginTransaction();
-        User u = new User();
-        u.setName("admin");
-        u.setPassword("admin");
-        u.setRole("admin");
+            Transaction tx = session.beginTransaction();
+            User u = new User();
+            u.setName("admin");
+            u.setPassword("admin");
+            u.setRole("admin");
 
-        session.persist(u);
-
-
-        Query<User> query = session.createNamedQuery("User.findByUserName");
-        query.setParameter("name", "tester");
+            session.persist(u);
 
 
-        System.out.println(query.getSingleResult());
-
-        session.remove(u);
-
+            Query<User> query = session.createNamedQuery("User.findByUserName");
+            query.setParameter("name", "tester");
 
 
-        tx.commit();
+            System.out.println(query.getSingleResult());
+
+            session.remove(u);
+
+            tx.commit();
+        } catch (Exception ignored) {}
+
+
+
         try {
             System.out.println("Compiling...");
             long l = System.currentTimeMillis();
