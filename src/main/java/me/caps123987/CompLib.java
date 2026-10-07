@@ -1,6 +1,7 @@
 package me.caps123987;
 
 import me.caps123987.config.JComponentConfig;
+import me.caps123987.database.DBManager;
 import me.caps123987.entities.User;
 import me.caps123987.window.JWindow;
 import me.caps123987.workers.FileWorker;
@@ -83,34 +84,11 @@ public class CompLib {
         JavaExecutor executor = new JavaExecutor();
         LConfigProcessor processor = new LConfigProcessor();
 
-        try {
-            Configuration cfg = new Configuration();
-            cfg.configure();
-            cfg.addAnnotatedClass(User.class);
+        DBManager dbManager = new DBManager();
+        dbManager.setupConnection();
+        Session session = dbManager.getSession();
 
-            SessionFactory factory = cfg.buildSessionFactory();
-            Session session = factory.openSession();
-            System.out.println("Hibernate setup successful!");
-
-            Transaction tx = session.beginTransaction();
-            User u = new User();
-            u.setName("admin");
-            u.setPassword("admin");
-            u.setRole("admin");
-
-            session.persist(u);
-
-
-            Query<User> query = session.createNamedQuery("User.findByUserName");
-            query.setParameter("name", "tester");
-
-
-            System.out.println(query.getSingleResult());
-
-            session.remove(u);
-
-            tx.commit();
-        } catch (Exception ignored) {}
+        System.out.println("Hibernate setup successful!");
 
 
 
