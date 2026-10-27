@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -25,8 +28,21 @@ public class LComponent {
     @Column(name = "code", nullable = false)
     private String code;
 
+    @Lob
+    @Column(name = "description", nullable = false)
+    private String description;
+
     @Column(name = "image", nullable = false)
     private byte[] image;
+
+    @OneToMany(mappedBy = "component")
+    private Set<Comment> comments = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "component")
+    private Set<Like> likes = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "component")
+    private Set<Tag> tags = new LinkedHashSet<>();
 
 
 }

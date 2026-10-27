@@ -6,15 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.swing.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
 @RequiredArgsConstructor
-public class JComponentConfig {
+public class LComponentConfig {
     @Getter
     @Setter
     @NonNull

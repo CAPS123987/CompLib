@@ -4,7 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DesignRules {
     public static final Color BACKGROUND = new Color(0x232324);
@@ -12,8 +15,26 @@ public class DesignRules {
     public static final Color NEUTRAL = new Color(0x323235);
     public static final Color ADDITIVE = new Color(0x2161D8);
     public static final Color DESCRUCTIVE = new Color(0xDA2C2C);
-    public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 14);
+//    public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 14);
+    public static final int DEFAULT_GAP = 5;
+    public static Font DEFAULT_FONT;
+    public static Font H1_FONT;
 
+    public static void init() {
+        DEFAULT_FONT = UIManager.getFont("semibold.font");
+        H1_FONT = UIManager.getFont("h1.font");
+    }
+    public static Map<String, String> toFlatLafExtraDefaults() {
+        Map<String, String> defaults = new LinkedHashMap<>();
+        defaults.put("@background", toHex(BACKGROUND));
+        defaults.put("@foreground", toHex(TEXT));
+        defaults.put("TextComponent.arc", "10");
+        return defaults;
+    }
+
+    private static String toHex(Color color) {
+        return String.format("#%06X", color.getRGB() & 0xFFFFFF);
+    }
 
     @Data
     @Builder(toBuilder=true)
@@ -23,10 +44,10 @@ public class DesignRules {
                 TEXT,
                 DesignRules.NEUTRAL.brighter(),
                 DEFAULT_FONT,
-                24,
+                20,
                 2,
-                16,
-                12
+                12,
+                6
         );
 
         public static DesignRules.Button ADDITVE = new DesignRules.Button(
@@ -34,10 +55,10 @@ public class DesignRules {
                 TEXT,
                 ADDITIVE.darker(),
                 DEFAULT_FONT,
-                24,
+                10,
                 2,
-                20,
-                12
+                12,
+                6
         );
 
         public static DesignRules.Button DESCTRUCTIVE = new DesignRules.Button(
@@ -45,10 +66,10 @@ public class DesignRules {
                 TEXT,
                 DESCRUCTIVE.darker(),
                 DEFAULT_FONT,
-                24,
-                2,
                 20,
-                12
+                2,
+                12,
+                6
         );
 
         @NonNull

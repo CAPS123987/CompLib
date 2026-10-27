@@ -1,19 +1,19 @@
 package me.caps123987.window;
 
+import me.caps123987.components.CreateComponentComponent;
 import me.caps123987.components.RoundBtn;
-import me.caps123987.config.JComponentConfig;
+import me.caps123987.config.LComponentConfig;
 import me.caps123987.design.DesignRules;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-public class JWindow extends JFrame {
+public class JWindowTests extends JFrame {
     JPanel backgroundPanel;
     int picovina = 55;
 
-    public JWindow(JComponent component, JComponentConfig config) {
+    public JWindowTests(JComponent component, LComponentConfig config) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
         setLocationRelativeTo(null);
@@ -78,6 +78,7 @@ public class JWindow extends JFrame {
         backgroundPanel.add(btn3);
         backgroundPanel.add(btn4);
         backgroundPanel.add(component);
+        backgroundPanel.add(new CreateComponentComponent());
 
         add(backgroundPanel);
     }

@@ -1,38 +1,36 @@
 package me.caps123987;
 
-import me.caps123987.config.JComponentConfig;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import me.caps123987.config.LComponentConfig;
 import me.caps123987.database.DBManager;
+import me.caps123987.design.DesignRules;
 import me.caps123987.entities.User;
-import me.caps123987.window.JWindow;
+import me.caps123987.themes.CompLibDarkFlatLaf;
+import me.caps123987.user.PasswordHasher;
+import me.caps123987.window.CompLibWindow;
+import me.caps123987.window.JWindowTests;
 import me.caps123987.workers.FileWorker;
 import me.caps123987.workers.JavaExecutor;
 import me.caps123987.workers.LConfigProcessor;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CompLib {
     public static final FileWorker FILE_WORKER = new FileWorker();
 
     public static final String SOURCE = """
                     import javax.swing.*;
+                    import java.awt.FlowLayout;
                     import java.awt.Color;
                     import java.util.Map;
                     import java.util.HashMap;
                     import java.util.Random;
                     import me.caps123987.annotation.LConfig;
                     
-                    public class CusBus extends JLabel{
+                    public class CusBus extends JPanel{
                         Map<Integer,Integer> map = new HashMap<>();
                         
                         @LConfig
@@ -41,26 +39,29 @@ public class CompLib {
                         @LConfig
                         public String kkt = "baf";
                         
+                        public JLabel label = new JLabel();
+                        public JButton button = new JButton("Change");
+                        
                         public CusBus() {
-                            this.setForeground(this.c);
+                            this.setLayout(new FlowLayout());
+                            label.setForeground(this.c);
+                            label.setText("Caaau");
                             
-                            this.setText("Caaau");
+                            this.add(label);
+                            this.add(button);
                             
-                    //      setBounds(100,100,100,100);
-
-                    //        Random r = new Random();
-                    //        System.out.println("CusBus created");
-                    //        
-                    //        for (int i = 0; i < 99999; i++) {
-                    //            map.put(r.nextInt(0,Integer.MAX_VALUE),r.nextInt(0,Integer.MAX_VALUE));
-                    //        }
+                            button.addActionListener(e -> {
+                                Random random = new Random();
+                                Color randomColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+                                this.setC(randomColor);
+                            });
                         }
                         public void setKkt(String s) {
                             System.out.println(s);
                         }
                         public void setC(Color c) {
                             this.c = c;
-                            this.setForeground(this.c);
+                            label.setForeground(this.c);
                         }
                         public void t1(int i) {
                             map.put(i,i);
@@ -79,33 +80,78 @@ public class CompLib {
                         }
                     }
                     """;
+
+
+    public static JavaExecutor EXECUTOR;
+    public static LConfigProcessor CONFIG_PROCESSOR;
+    public static DBManager DB_MANAGER;
+
     public static void main(String[] args) {
+//        CompLibDarkFlatLaf.installProperty(null,"background","#323235");
+//        FlatLaf.registerCustomDefaultsSource("me.caps123987.themes");
 
-        JavaExecutor executor = new JavaExecutor();
-        LConfigProcessor processor = new LConfigProcessor();
+//        FlatDarkLaf.setup();
+        FlatLaf.setGlobalExtraDefaults(DesignRules.toFlatLafExtraDefaults());
+        FlatDarkLaf.setup();
 
-        DBManager dbManager = new DBManager();
-        dbManager.setupConnection();
-        Session session = dbManager.getSession();
+        DesignRules.init();
 
+        CompLibWindow compLibWindow = new CompLibWindow();
+        compLibWindow.setVisible(true);
+
+        DB_MANAGER = new DBManager();
+        CONFIG_PROCESSOR = new LConfigProcessor();
+        EXECUTOR = new JavaExecutor();
+
+        DB_MANAGER.setupConnection();
         System.out.println("Hibernate setup successful!");
 
+        Session session;
+        try {
+            session = DB_MANAGER.getSession();
+            compLibWindow.updateConnection(true);
+        } catch (Exception ignored) {
+            compLibWindow.updateConnection(false);
+            return;
+        }
+
+
+//        User user = UserFactory.createUser("admin", "admin", "admin");
+//        Transaction transaction = session.beginTransaction();
+//        session.persist(user);
+//        transaction.commit();
+
+
+        User adminAccount = session.createNamedSelectionQuery("User.findByUserName", User.class)
+                .setParameter("name", "admin")
+                .getSingleResult();
+
+        System.out.println(adminAccount);
+
+        System.out.println(PasswordHasher.validate("admin", adminAccount));
+        System.out.println(PasswordHasher.validate("test", adminAccount));
+        System.out.println(PasswordHasher.validate("yeaah", adminAccount));
+        System.out.println(PasswordHasher.validate("Admin", adminAccount));
+
+
+
+        if(true) return;
 
 
         try {
             System.out.println("Compiling...");
             long l = System.currentTimeMillis();
 
-            JComponent component = executor.getJComponent(SOURCE);
+            JComponent component = EXECUTOR.getJComponent(SOURCE);
             FILE_WORKER.run();
             component.getClass().getDeclaredMethod("t1",int.class).invoke(component,5);
 
-            JComponentConfig config = processor.getComponentConfig(component);
+            LComponentConfig config = CONFIG_PROCESSOR.getComponentConfig(component);
 
             System.out.println("Compiled in "+(System.currentTimeMillis()-l)/1000.0+"s");
 
 
-            JWindow window = new JWindow(component,config);
+            JWindowTests window = new JWindowTests(component,config);
             JLabel labelL = new JLabel();
             labelL.setText("Label L");
             labelL.setForeground(Color.WHITE);

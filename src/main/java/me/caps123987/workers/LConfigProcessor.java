@@ -1,6 +1,6 @@
 package me.caps123987.workers;
 
-import me.caps123987.config.JComponentConfig;
+import me.caps123987.config.LComponentConfig;
 import me.caps123987.config.SimpleField;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LConfigProcessor {
-    public JComponentConfig getComponentConfig(JComponent component)
+    public LComponentConfig getComponentConfig(JComponent component)
             throws LConfigProcessorFieldAccessException, LConfigProcessorFieldSetterNotFoundException {
         Class<?> clazz = component.getClass();
 
@@ -41,7 +41,7 @@ public class LConfigProcessor {
 
         System.out.println(simpleFieldMap);
 
-        return new JComponentConfig(simpleFieldMap, component);
+        return new LComponentConfig(simpleFieldMap, component);
     }
 
     private static SimpleField getSimpleField(JComponent component, Field f, Class<?> clazz) throws LConfigProcessorFieldSetterNotFoundException {

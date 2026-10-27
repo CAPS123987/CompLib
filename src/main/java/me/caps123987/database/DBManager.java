@@ -1,6 +1,6 @@
 package me.caps123987.database;
 
-import me.caps123987.entities.User;
+import me.caps123987.entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -72,7 +72,12 @@ public class DBManager {
 
     public List<Class<?>> getAvaibleClasses() {
         return List.of(
-                User.class
+                User.class,
+                Comment.class,
+                LComponent.class,
+                Like.class,
+                Tag.class,
+                Uniquetag.class
         );
     }
 }

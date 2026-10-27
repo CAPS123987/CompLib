@@ -3,6 +3,10 @@ package me.caps123987.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.Instant;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,5 +30,7 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-
+    @ColumnDefault("current_timestamp()")
+    @Column(name = "timestamp")
+    private Instant timestamp;
 }
