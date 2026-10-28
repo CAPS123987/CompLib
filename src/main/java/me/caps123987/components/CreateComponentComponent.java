@@ -21,7 +21,7 @@ public class CreateComponentComponent extends JPanel {
 
         JPanel fields = new JPanel(new GridLayout(4,2,2,2));
 
-        RoundBtn submitBtn = new RoundBtn(DesignRules.Button.NEUTRAL, "Submit");
+        RoundedButton submitBtn = new RoundedButton(DesignRules.Button.NEUTRAL, "Submit");
 
         JScrollPane scrollPaneCode = new JScrollPane(codeField);
 //        scrollPaneCode.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

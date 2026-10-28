@@ -8,10 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
-public class RoundBtn extends JButton {
+public class TagComponent extends JLabel implements RoundedComponent<DesignRules.Tag>{
+
     @Getter
     @Setter
-    DesignRules.Button buttonDesign;
+    DesignRules.Tag design;
     @Getter
     @Setter
     private int roundness;
@@ -22,38 +23,13 @@ public class RoundBtn extends JButton {
     @Setter
     private int lineWidth;
 
-    public RoundBtn(DesignRules.Button buttonDesign, String text) {
-        this();
-
+    public TagComponent(DesignRules.Tag design, String text) {
         setText(text);
+        setHorizontalAlignment(SwingConstants.CENTER);
 
-        setButtonDesign(buttonDesign);
+        setDesign(design);
 
-        updateButtonDesign();
-    }
-
-    public RoundBtn() {
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        setBorder(null);
-    }
-
-    public void updateButtonDesign(DesignRules.Button buttonDesign) {
-        setBackground(buttonDesign.getBackgroundColor());
-        setForeground(buttonDesign.getForegroundColor());
-        setFont(buttonDesign.getFont());
-
-        setBorderColor(buttonDesign.getBorderColor());
-        setRoundness(buttonDesign.getRadius());
-        setLineWidth(buttonDesign.getLineWidth());
-
-        Dimension minimumSize = getMinimumSize();
-        setPreferredSize(new Dimension(minimumSize.width + buttonDesign.getTextPaddingX() * 2,
-                minimumSize.height + buttonDesign.getTextPaddingY() * 2));
-    }
-
-    public void updateButtonDesign() {
-        updateButtonDesign(getButtonDesign());
+        updateDesign();
     }
 
     @Override
@@ -69,23 +45,15 @@ public class RoundBtn extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 
-        //if pressed change color
-        if (getModel().isPressed()) {
-            g2.setColor(getBackground().darker());
-        } else {
-            g2.setColor(getBackground());
-        }
+        g2.setColor(getBackground());
+
 
         //pozadi
         int lineWidth = getLineWidth();
         g2.fill(new RoundRectangle2D.Double(lineWidth, lineWidth, getWidth() - lineWidth*2, getHeight() - lineWidth*2, roundness + lineWidth, roundness + lineWidth));
 
 
-        if (getModel().isPressed()) {
-            g2.setColor(getBorderColor().darker());
-        } else {
-            g2.setColor(getBorderColor());
-        }
+        g2.setColor(getBorderColor());
 
         //outline
         g2.setStroke(new BasicStroke(lineWidth));

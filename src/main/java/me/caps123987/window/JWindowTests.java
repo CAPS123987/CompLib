@@ -1,7 +1,7 @@
 package me.caps123987.window;
 
 import me.caps123987.components.CreateComponentComponent;
-import me.caps123987.components.RoundBtn;
+import me.caps123987.components.RoundedButton;
 import me.caps123987.config.LComponentConfig;
 import me.caps123987.design.DesignRules;
 
@@ -36,7 +36,7 @@ public class JWindowTests extends JFrame {
 
         backgroundPanel.setLayout(new FlowLayout());
 
-        RoundBtn btn = new RoundBtn(DesignRules.Button.NEUTRAL, "Hello mother guy");
+        RoundedButton btn = new RoundedButton(DesignRules.Button.NEUTRAL, "Hello mother guy");
 
         btn.addActionListener(e -> {
 
@@ -50,20 +50,20 @@ public class JWindowTests extends JFrame {
             }
         });
 
-        RoundBtn btn2 = new RoundBtn(DesignRules.Button.ADDITVE, "Přihlásit");
+        RoundedButton btn2 = new RoundedButton(DesignRules.Button.ADDITVE, "Přihlásit");
 
-        RoundBtn btn3 = new RoundBtn(DesignRules.Button.DESCTRUCTIVE, "Odhlásit");
+        RoundedButton btn3 = new RoundedButton(DesignRules.Button.DESCTRUCTIVE, "Odhlásit");
 
-        RoundBtn btn4 = new RoundBtn(DesignRules.Button.NEUTRAL.toBuilder().textPaddingX(50).build(), "Sem edited neutrál :)");
+        RoundedButton btn4 = new RoundedButton(DesignRules.Button.NEUTRAL.toBuilder().textPaddingX(50).build(), "Sem edited neutrál :)");
 
         btn4.addActionListener(e -> {
             btn4.setText("A ted edited Additive");
-            btn4.setButtonDesign(DesignRules.Button.ADDITVE.toBuilder()
+            btn4.setDesign(DesignRules.Button.ADDITVE.toBuilder()
                     .borderColor(new Color(new Random().nextInt(0,255),
                             new Random().nextInt(0,255),
                     new Random().nextInt(0,255)))
                     .textPaddingX(50).build());
-            btn4.updateButtonDesign();
+            btn4.updateDesign();
 
             config.getSimpleField("kkt").setValue("tohle tisknu");
 
