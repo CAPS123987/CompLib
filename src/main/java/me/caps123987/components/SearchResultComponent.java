@@ -2,6 +2,7 @@ package me.caps123987.components;
 
 import me.caps123987.design.DesignRules;
 import me.caps123987.entities.LComponent;
+import me.caps123987.window.CompLibWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.awt.*;
 public class SearchResultComponent extends RoundedPanel {
     LComponent lComponent;
 
-    public SearchResultComponent(LComponent lComponent) {
+    public SearchResultComponent(LComponent lComponent, CompLibWindow window) {
         super(DesignRules.Panel.NEUTRAL, new BorderLayout(DesignRules.DEFAULT_GAP, DesignRules.DEFAULT_GAP));
 
 //        setLayout(new BorderLayout(DesignRules.DEFAULT_GAP, DesignRules.DEFAULT_GAP));
@@ -44,10 +45,14 @@ public class SearchResultComponent extends RoundedPanel {
 
 
         lComponent.getTags().forEach(tag -> {
-            tagsPanel.add(new TagComponent(DesignRules.Tag.NEUTRAL, tag.getUniquetag().getName()));
+            tagsPanel.add(new TagComponent(tag.getUniquetag().getName()));
         });
 
         JButton seeComponentButtom = new RoundedButton(DesignRules.Button.NEUTRAL, "See Component");
+
+        seeComponentButtom.addActionListener(e -> {
+            window.renderComponent(lComponent);
+        });
 
         bottomPanel.add(tagsPanel, BorderLayout.NORTH);
         bottomPanel.add(seeComponentButtom, BorderLayout.SOUTH);

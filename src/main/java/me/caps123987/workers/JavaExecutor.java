@@ -7,15 +7,17 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Consumer;
 
 public class JavaExecutor {
     private static final int PUBLIC_CLASS_NAME_START_LENGTH = "public class ".length();
 
-    public JComponent getJComponent(String source)
+    public void getJComponent(String source, Consumer<JComponent> callback)
             throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException,
             InstantiationException, IllegalAccessException, JavaExecutorNoCompilerError,  JavaExecutorClassSyntaxError, JavaExecutorCompilationError {
         //vytvořit file odpovídající třídě
@@ -35,32 +37,58 @@ public class JavaExecutor {
 
 //        System.out.println("Class name: " + className);
 
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        Thread compilerThread = new Thread(()->{
 
-        if(compiler == null) {
-            throw new JavaExecutorNoCompilerError("No Java compiler available. Make sure to run this with a JDK, not a JRE.");
-        }
+            try {
 
-        Path dir = Files.createTempDirectory("CompLibJava");
-        Path file = dir.resolve(className+".java");
-        Files.writeString(file, source);
+                JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
-        int result = compiler
-                .run(null, null, null, file.toString());
-        if (result != 0) {
-            CompLib.FILE_WORKER.removeFile(dir);
+                if(compiler == null) {
+                    throw new JavaExecutorNoCompilerError("No Java compiler available. Make sure to run this with a JDK, not a JRE.");
+                }
+                Path dir = Files.createTempDirectory("CompLibJava");
+                Path file = dir.resolve(className+".java");
+                Files.writeString(file, source);
 
-            throw new JavaExecutorCompilationError("The source did not compile");
-        }
+                int result = compiler
+                        .run(null, null, null, file.toString());
+                if (result != 0) {
+                    CompLib.FILE_WORKER.removeFile(dir);
 
-        // 3. load the class from that folder and create one
-        ClassLoader loader = new URLClassLoader(new URL[] { dir.toUri().toURL() });
-        Class<?> type = loader.loadClass(className);
-        JComponent button = (JComponent) type.getConstructor().newInstance();
+                    throw new JavaExecutorCompilationError("The source did not compile");
+                }
 
-        CompLib.FILE_WORKER.removeFile(dir);
+                ClassLoader loader = new URLClassLoader(new URL[]{dir.toUri().toURL()});
+                Class<?> type = loader.loadClass(className);
+                JComponent component = (JComponent) type.getConstructor().newInstance();
 
-        return button;
+                callback.accept(component);
+
+                CompLib.FILE_WORKER.removeFile(dir);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (JavaExecutorNoCompilerError e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (JavaExecutorCompilationError e) {
+                throw new RuntimeException(e);
+            }
+
+
+        });
+
+        compilerThread.start();
     }
     public static class JavaExecutorException extends Exception {
         public JavaExecutorException(String message) {

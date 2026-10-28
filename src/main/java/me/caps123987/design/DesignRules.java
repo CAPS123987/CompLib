@@ -91,6 +91,7 @@ public class DesignRules {
                 .textPaddingX(12)
                 .textPaddingY(4)
                 .build();
+        public static DesignRules.Tag DEFAULT = NEUTRAL;
     }
 
 

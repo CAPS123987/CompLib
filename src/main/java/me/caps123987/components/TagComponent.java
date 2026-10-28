@@ -32,6 +32,10 @@ public class TagComponent extends JLabel implements RoundedComponent<DesignRules
         updateDesign();
     }
 
+    public TagComponent(String text) {
+        this(DesignRules.Tag.DEFAULT, text);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();

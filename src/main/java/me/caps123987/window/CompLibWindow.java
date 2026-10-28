@@ -2,6 +2,7 @@ package me.caps123987.window;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import me.caps123987.CompLib;
+import me.caps123987.components.LComponentPanel;
 import me.caps123987.components.RoundedButton;
 import me.caps123987.components.RoundedPanel;
 import me.caps123987.components.SearchResultComponent;
@@ -30,6 +31,8 @@ public class CompLibWindow extends JFrame {
 
     private final JPanel mainPanel = new RoundedPanel(new BorderLayout());
 
+
+    public LComponent selectedComponent;
 
     public CompLibWindow() {
         super();
@@ -93,29 +96,7 @@ public class CompLibWindow extends JFrame {
             session.createQuery("FROM LComponent ", LComponent.class)
                     .getResultList()
                     .forEach(component -> {
-                        searchOutputHolderPanel.add(new SearchResultComponent(component));
-                        try {
-                            JComponent JComponent = CompLib.EXECUTOR.getJComponent(component.getCode());
-//                            searchOutputHolderPanel.add(JComponent);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        } catch (ClassNotFoundException e) {
-                            throw new RuntimeException(e);
-                        } catch (NoSuchMethodException e) {
-                            throw new RuntimeException(e);
-                        } catch (InvocationTargetException e) {
-                            throw new RuntimeException(e);
-                        } catch (InstantiationException e) {
-                            throw new RuntimeException(e);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        } catch (JavaExecutor.JavaExecutorNoCompilerError e) {
-                            throw new RuntimeException(e);
-                        } catch (JavaExecutor.JavaExecutorClassSyntaxError e) {
-                            throw new RuntimeException(e);
-                        } catch (JavaExecutor.JavaExecutorCompilationError e) {
-                            throw new RuntimeException(e);
-                        }
+                        searchOutputHolderPanel.add(new SearchResultComponent(component, this));
                     });
         } else {
             searchOutputHolderPanel.add(new JLabel("Connection was not successful. Please check your database connection settings."));
@@ -126,7 +107,20 @@ public class CompLibWindow extends JFrame {
 
         revalidate();
         repaint();
+    }
 
+    public void renderComponent(LComponent selectedComponent) {
+        this.selectedComponent = selectedComponent;
 
+        if (mainPanel.getComponentCount() > 0) {
+            mainPanel.removeAll();
+        }
+
+        LComponentPanel componentPanel = new LComponentPanel(selectedComponent);
+        mainPanel.add(componentPanel, BorderLayout.CENTER);
+
+        System.out.println("Rendering component: " + selectedComponent.getName());
+        revalidate();
+        repaint();
     }
 }

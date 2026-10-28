@@ -142,22 +142,22 @@ public class CompLib {
             System.out.println("Compiling...");
             long l = System.currentTimeMillis();
 
-            JComponent component = EXECUTOR.getJComponent(SOURCE);
-            FILE_WORKER.run();
-            component.getClass().getDeclaredMethod("t1",int.class).invoke(component,5);
-
-            LComponentConfig config = CONFIG_PROCESSOR.getComponentConfig(component);
-
-            System.out.println("Compiled in "+(System.currentTimeMillis()-l)/1000.0+"s");
-
-
-            JWindowTests window = new JWindowTests(component,config);
-            JLabel labelL = new JLabel();
-            labelL.setText("Label L");
-            labelL.setForeground(Color.WHITE);
-//            window.add(labelL);
-
-            window.setVisible(true);
+//            JComponent component = EXECUTOR.getJComponent(SOURCE);
+//            FILE_WORKER.run();
+//            component.getClass().getDeclaredMethod("t1",int.class).invoke(component,5);
+//
+//            LComponentConfig config = CONFIG_PROCESSOR.getComponentConfig(component);
+//
+//            System.out.println("Compiled in "+(System.currentTimeMillis()-l)/1000.0+"s");
+//
+//
+//            JWindowTests window = new JWindowTests(component,config);
+//            JLabel labelL = new JLabel();
+//            labelL.setText("Label L");
+//            labelL.setForeground(Color.WHITE);
+////            window.add(labelL);
+//
+//            window.setVisible(true);
         } catch (Exception e) {
             FILE_WORKER.run();
             throw new RuntimeException(e);
